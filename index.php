@@ -143,6 +143,16 @@
             text-align: right;
             z-index: 20;
         }
+
+        .instructions a {
+            color: #FFD700;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .instructions a:hover {
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -151,9 +161,27 @@
         <div class="game-over" id="gameOver">
             <h1>Game Over!</h1>
             <p id="finalScore">Final Score: 0</p>
-            <button onclick="location.reload()">Play Again</button>
+            <input type="text" id="playerName" placeholder="Enter your name" maxlength="30" style="
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+                border: none;
+                border-radius: 3px;
+                font-size: 14px;
+            ">
+            <div style="display: flex; gap: 10px;">
+                <button onclick="saveScore()" style="flex: 1; padding: 10px 15px; background: #90EE90; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Save Score</button>
+                <button onclick="location.reload()" style="flex: 1; padding: 10px 15px; background: #FFD700; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Play Again</button>
+            </div>
+            <a href="leaderboard.php" style="display: block; margin-top: 10px; color: #FFD700; text-decoration: none; text-align: center; font-size: 14px;">View Leaderboard</a>
         </div>
-        <div class="instructions">Click or Press SPACE to fly</div>
+        <div class="instructions">
+            <div>Click or Press SPACE to fly</div>
+            <div style="margin-top: 10px; font-size: 11px;">
+                <a href="leaderboard.php" style="color: white; margin-right: 15px;">Leaderboard</a>
+                <a href="about.php" style="color: white;">About</a>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -309,6 +337,34 @@
                 jump();
             }
         });
+
+        function saveScore() {
+            const playerNameInput = document.getElementById('playerName');
+            const playerName = playerNameInput.value.trim() || 'Anonymous';
+
+            fetch('game.php?action=saveScore', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    playerName: playerName,
+                    score: score
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    playerNameInput.style.borderTop = '3px solid #90EE90';
+                    playerNameInput.placeholder = 'Score saved!';
+                    playerNameInput.disabled = true;
+                    setTimeout(() => {
+                        window.location.href = 'leaderboard.php';
+                    }, 1500);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
 
         createBirdElement();
         createPipe();

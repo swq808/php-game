@@ -1,0 +1,12 @@
+{
+    "gameName": "Flappy Bird",
+    "version": "1.0.0",
+    "createdDate": "2026-03-09",
+    "aiUsage": "AI was used to help design the game mechanics, optimize the collision detection algorithm, and create the responsive user interface. AI assisted in structuring the PHP backend functions for score management and leaderboard sorting.",
+    "credits": [
+        "Game Concept: Flappy Bird inspired game",
+        "Developer: Replit Game Developer",
+        "Framework: Vanilla PHP and JavaScript",
+        "UI Design: Modern gradient-based interface"
+    ]
+}
