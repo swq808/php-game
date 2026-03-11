@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RocketGoal.io - Rocket Soccer</title>
+    <title>Flappy Bird</title>
     <style>
         * {
             margin: 0;
@@ -12,467 +12,282 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: #fff;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #ff6b00, #ffa500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .instructions {
-            color: #aaa;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-        }
-
-        .game-wrapper {
-            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
         }
 
         .game-container {
             position: relative;
-            width: 800px;
+            width: 400px;
             height: 600px;
-            background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1e 100%);
-            border: 3px solid #ff6b00;
-            border-radius: 10px;
+            background: linear-gradient(to bottom, #87ceeb 0%, #e0f6ff 100%);
+            border: 3px solid #333;
             overflow: hidden;
-            box-shadow: 0 0 30px rgba(255, 107, 0, 0.5);
-            cursor: crosshair;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
         }
 
-        .game-field {
-            position: relative;
+        canvas {
+            display: block;
             width: 100%;
             height: 100%;
-            background: linear-gradient(180deg, #1a1a3e 0%, #0a0a1e 100%);
         }
 
-        .goal-area {
+        .info {
             position: absolute;
-            width: 150px;
-            height: 200px;
-            border: 3px dashed;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
+            top: 20px;
+            left: 20px;
+            color: #333;
+            font-size: 24px;
             font-weight: bold;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .goal-left {
-            left: 10px;
-            border-color: #00ff00;
-            background: rgba(0, 255, 0, 0.1);
-        }
-
-        .goal-right {
-            right: 10px;
-            border-color: #ff00ff;
-            background: rgba(255, 0, 255, 0.1);
-        }
-
-        .ball {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: radial-gradient(circle at 30% 30%, #ffff00, #ff8800);
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(255, 136, 0, 0.8);
             z-index: 10;
         }
 
-        .boost-indicator {
+        .game-over {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
-            font-size: 0.9em;
-            color: #ffa500;
-        }
-
-        .boost-bar {
-            width: 200px;
-            height: 15px;
-            background: #333;
-            border: 1px solid #ffa500;
-            margin-top: 5px;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .boost-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff6b00, #ffaa00);
-            width: 100%;
-            transition: width 0.1s;
-        }
-
-        .score-board {
-            position: absolute;
-            top: 20px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            z-index: 20;
-        }
-
-        .score-board h2 {
-            font-size: 2em;
-            color: #ffff00;
-            margin: 0;
-        }
-
-        .player-scores {
-            display: flex;
-            gap: 30px;
-            margin-top: 10px;
-            font-size: 1.2em;
-        }
-
-        .player-score {
-            padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 5px;
-            min-width: 100px;
-        }
-
-        .player-score.left {
-            border-left: 3px solid #00ff00;
-        }
-
-        .player-score.right {
-            border-right: 3px solid #ff00ff;
-        }
-
-        .controls {
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(255, 107, 0, 0.1);
-            border: 1px solid #ff6b00;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 40px;
             border-radius: 10px;
             text-align: center;
-            max-width: 800px;
+            z-index: 20;
+            display: none;
+            min-width: 300px;
         }
 
-        .controls h3 {
+        .game-over h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .game-over p {
+            font-size: 24px;
             margin-bottom: 10px;
-            color: #ffaa00;
         }
 
-        .control-item {
-            margin: 8px 0;
-            color: #ddd;
-        }
-
-        .reset-btn {
+        .game-over button {
             margin-top: 20px;
             padding: 12px 30px;
-            background: linear-gradient(135deg, #ff6b00, #ffa500);
-            border: none;
+            font-size: 18px;
+            background: #667eea;
             color: white;
-            font-size: 1em;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: background 0.3s;
         }
 
-        .reset-btn:hover {
-            transform: scale(1.05);
+        .game-over button:hover {
+            background: #764ba2;
         }
 
-        .reset-btn:active {
-            transform: scale(0.95);
-        }
-
-        .goal-flash {
+        .instructions {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 30;
-        }
-
-        @keyframes flash {
-            0% { background: transparent; }
-            50% { background: rgba(255, 255, 0, 0.3); }
-            100% { background: transparent; }
-        }
-
-        .goal-flash.active {
-            animation: flash 0.5s;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #333;
+            text-align: center;
+            font-size: 14px;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🚀 RocketGoal.io</h1>
-        <p class="instructions">Click and drag to aim, release to boost the ball toward the goal!</p>
-    </div>
-
-    <div class="game-wrapper">
-        <div class="game-container">
-            <div class="game-field" id="gameField">
-                <div class="score-board">
-                    <h2>ROCKET SOCCER</h2>
-                    <div class="player-scores">
-                        <div class="player-score left">
-                            🟢 <span id="leftScore">0</span>
-                        </div>
-                        <div class="player-score right">
-                            🟣 <span id="rightScore">0</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="goal-area goal-left">🟢<br>GOAL</div>
-                <div class="goal-area goal-right">🟣<br>GOAL</div>
-
-                <div class="ball" id="ball"></div>
-
-                <div class="boost-indicator">
-                    <div>Boost Power</div>
-                    <div class="boost-bar">
-                        <div class="boost-fill" id="boostFill"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="goal-flash" id="goalFlash"></div>
+    <div class="game-container" id="gameContainer">
+        <canvas id="gameCanvas" width="400" height="600"></canvas>
+        <div class="info">
+            Score: <span id="score">0</span>
+        </div>
+        <div class="game-over" id="gameOver">
+            <h1>Game Over!</h1>
+            <p>Score: <span id="finalScore">0</span></p>
+            <button onclick="location.reload()">Play Again</button>
+        </div>
+        <div class="instructions">
+            Click or press SPACE to flap
         </div>
     </div>
 
-    <div class="controls">
-        <h3>HOW TO PLAY</h3>
-        <div class="control-item">1. Click inside the field and drag to charge your boost</div>
-        <div class="control-item">2. Release to launch the ball toward the opposite goal</div>
-        <div class="control-item">3. Score by getting the ball into the opposite colored goal area</div>
-        <div class="control-item">4. The ball moves with physics - gravity affects it!</div>
-        <button class="reset-btn" onclick="resetGame()">Reset Game</button>
-    </div>
-
     <script>
-        const gameField = document.getElementById('gameField');
-        const ball = document.getElementById('ball');
-        const boostFill = document.getElementById('boostFill');
-        const goalFlash = document.getElementById('goalFlash');
-        const leftScoreEl = document.getElementById('leftScore');
-        const rightScoreEl = document.getElementById('rightScore');
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gameContainer = document.getElementById('gameContainer');
+        const gameOverScreen = document.getElementById('gameOver');
+        const scoreDisplay = document.getElementById('score');
+        const finalScoreDisplay = document.getElementById('finalScore');
 
-        let ballX = 400;
-        let ballY = 300;
-        let ballVX = 0;
-        let ballVY = 0;
-        const ballRadius = 15;
-        const gravity = 0.3;
-        const friction = 0.98;
-        const boostMax = 50;
-        let boostPower = 0;
-        let isCharging = false;
-        let chargeStartX = 0;
-        let chargeStartY = 0;
-        let leftScore = 0;
-        let rightScore = 0;
+        // Game variables
+        const bird = {
+            x: 50,
+            y: 150,
+            width: 30,
+            height: 30,
+            velocity: 0,
+            gravity: 0.6,
+            jumpPower: -12,
+            color: '#FFD700'
+        };
 
-        const fieldWidth = 800;
-        const fieldHeight = 600;
-        const goalLeftX = 10;
-        const goalLeftY = 200;
-        const goalLeftW = 150;
-        const goalLeftH = 200;
-        const goalRightX = fieldWidth - 160;
-        const goalRightY = 200;
-        const goalRightW = 150;
-        const goalRightH = 200;
+        let pipes = [];
+        let score = 0;
+        let gameRunning = true;
+        let gameStarted = false;
+        let pipeCounter = 0;
+        const pipeGap = 120;
+        const pipeWidth = 60;
+        const pipeSpacing = 200;
 
-        function updateBall() {
-            ballX += ballVX;
-            ballY += ballVY;
-
-            ballVX *= friction;
-            ballVY *= friction;
-            ballVY += gravity;
-
-            // Bounce off walls
-            if (ballX - ballRadius < 0) {
-                ballX = ballRadius;
-                ballVX = -ballVX * 0.8;
+        // Event listeners
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                jump();
             }
-            if (ballX + ballRadius > fieldWidth) {
-                ballX = fieldWidth - ballRadius;
-                ballVX = -ballVX * 0.8;
-            }
-            if (ballY - ballRadius < 0) {
-                ballY = ballRadius;
-                ballVY = -ballVY * 0.8;
-            }
-            if (ballY + ballRadius > fieldHeight) {
-                ballY = fieldHeight - ballRadius;
-                ballVY = -ballVY * 0.8;
-            }
+        });
 
-            ball.style.left = (ballX - ballRadius) + 'px';
-            ball.style.top = (ballY - ballRadius) + 'px';
+        gameContainer.addEventListener('click', jump);
 
-            checkGoals();
-        }
-
-        function checkGoals() {
-            // Left goal (green)
-            if (ballX > goalLeftX && ballX < goalLeftX + goalLeftW &&
-                ballY > goalLeftY && ballY < goalLeftY + goalLeftH) {
-                rightScore++;
-                rightScoreEl.textContent = rightScore;
-                triggerGoal();
-                resetBall(false);
-            }
-
-            // Right goal (magenta)
-            if (ballX > goalRightX && ballX < goalRightX + goalRightW &&
-                ballY > goalRightY && ballY < goalRightY + goalRightH) {
-                leftScore++;
-                leftScoreEl.textContent = leftScore;
-                triggerGoal();
-                resetBall(true);
+        function jump() {
+            if (gameRunning) {
+                bird.velocity = bird.jumpPower;
             }
         }
 
-        function triggerGoal() {
-            goalFlash.classList.remove('active');
-            setTimeout(() => {
-                goalFlash.classList.add('active');
-            }, 10);
+        function createPipe() {
+            const minHeight = 50;
+            const maxHeight = canvas.height - pipeGap - minHeight;
+            const pipeY = Math.random() * (maxHeight - minHeight) + minHeight;
+
+            pipes.push({
+                x: canvas.width,
+                y: 0,
+                width: pipeWidth,
+                height: pipeY
+            });
+
+            pipes.push({
+                x: canvas.width,
+                y: pipeY + pipeGap,
+                width: pipeWidth,
+                height: canvas.height - (pipeY + pipeGap)
+            });
         }
 
-        function resetBall(forLeft = true) {
-            ballX = forLeft ? 150 : fieldWidth - 150;
-            ballY = fieldHeight / 2;
-            ballVX = 0;
-            ballVY = 0;
-            boostPower = 0;
-            updateBoostBar();
+        function update() {
+            if (!gameRunning) return;
+
+            // Apply gravity
+            bird.velocity += bird.gravity;
+            bird.y += bird.velocity;
+
+            // Check boundaries
+            if (bird.y + bird.height > canvas.height) {
+                endGame();
+                return;
+            }
+
+            if (bird.y < 0) {
+                bird.y = 0;
+            }
+
+            // Update pipes
+            for (let i = pipes.length - 1; i >= 0; i--) {
+                pipes[i].x -= 5;
+
+                // Remove off-screen pipes
+                if (pipes[i].x + pipeWidth < 0) {
+                    pipes.splice(i, 1);
+                    continue;
+                }
+
+                // Check collision
+                if (
+                    bird.x < pipes[i].x + pipes[i].width &&
+                    bird.x + bird.width > pipes[i].x &&
+                    bird.y < pipes[i].y + pipes[i].height &&
+                    bird.y + bird.height > pipes[i].y
+                ) {
+                    endGame();
+                    return;
+                }
+
+                // Score when passing a pipe
+                if (pipes[i].x + pipeWidth < bird.x && pipes[i].x + pipeWidth > bird.x - 5) {
+                    if (pipes[i].height < canvas.height / 2) {
+                        score++;
+                        scoreDisplay.textContent = score;
+                    }
+                }
+            }
+
+            // Create new pipes
+            pipeCounter++;
+            if (pipeCounter > pipeSpacing) {
+                createPipe();
+                pipeCounter = 0;
+            }
         }
 
-        function resetGame() {
-            leftScore = 0;
-            rightScore = 0;
-            leftScoreEl.textContent = '0';
-            rightScoreEl.textContent = '0';
-            resetBall(true);
+        function draw() {
+            // Draw background
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#87ceeb');
+            gradient.addColorStop(1, '#e0f6ff');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw pipes
+            ctx.fillStyle = '#2ecc71';
+            pipes.forEach(pipe => {
+                ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
+            });
+
+            // Draw pipe borders for effect
+            ctx.strokeStyle = '#27ae60';
+            ctx.lineWidth = 2;
+            pipes.forEach(pipe => {
+                ctx.strokeRect(pipe.x, pipe.y, pipe.width, pipe.height);
+            });
+
+            // Draw bird
+            ctx.fillStyle = bird.color;
+            ctx.beginPath();
+            ctx.arc(bird.x + bird.width / 2, bird.y + bird.height / 2, bird.width / 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw bird eye
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(bird.x + bird.width / 2 + 5, bird.y + bird.height / 2 - 5, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(bird.x + bird.width / 2 + 6, bird.y + bird.height / 2 - 5, 2, 0, Math.PI * 2);
+            ctx.fill();
         }
 
-        function updateBoostBar() {
-            const percentage = (boostPower / boostMax) * 100;
-            boostFill.style.width = percentage + '%';
+        function endGame() {
+            gameRunning = false;
+            finalScoreDisplay.textContent = score;
+            gameOverScreen.style.display = 'block';
         }
-
-        gameField.addEventListener('mousedown', (e) => {
-            if (isCharging) return;
-            isCharging = true;
-            const rect = gameField.getBoundingClientRect();
-            chargeStartX = e.clientX - rect.left;
-            chargeStartY = e.clientY - rect.top;
-            boostPower = 0;
-            updateBoostBar();
-        });
-
-        gameField.addEventListener('mousemove', (e) => {
-            if (!isCharging) return;
-            const rect = gameField.getBoundingClientRect();
-            const currentX = e.clientX - rect.left;
-            const currentY = e.clientY - rect.top;
-            const dx = currentX - chargeStartX;
-            const dy = currentY - chargeStartY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            boostPower = Math.min(distance, boostMax);
-            updateBoostBar();
-        });
-
-        gameField.addEventListener('mouseup', (e) => {
-            if (!isCharging) return;
-            isCharging = false;
-            const rect = gameField.getBoundingClientRect();
-            const endX = e.clientX - rect.left;
-            const endY = e.clientY - rect.top;
-            const dx = endX - chargeStartX;
-            const dy = endY - chargeStartY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            const angle = Math.atan2(dy, dx);
-            const power = Math.min(distance, boostMax);
-            ballVX = Math.cos(angle) * power * 0.3;
-            ballVY = Math.sin(angle) * power * 0.3;
-            boostPower = 0;
-            updateBoostBar();
-        });
-
-        // Touch support
-        gameField.addEventListener('touchstart', (e) => {
-            if (isCharging) return;
-            isCharging = true;
-            const rect = gameField.getBoundingClientRect();
-            chargeStartX = e.touches[0].clientX - rect.left;
-            chargeStartY = e.touches[0].clientY - rect.top;
-            boostPower = 0;
-            updateBoostBar();
-        });
-
-        gameField.addEventListener('touchmove', (e) => {
-            if (!isCharging) return;
-            const rect = gameField.getBoundingClientRect();
-            const currentX = e.touches[0].clientX - rect.left;
-            const currentY = e.touches[0].clientY - rect.top;
-            const dx = currentX - chargeStartX;
-            const dy = currentY - chargeStartY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            boostPower = Math.min(distance, boostMax);
-            updateBoostBar();
-        });
-
-        gameField.addEventListener('touchend', (e) => {
-            if (!isCharging) return;
-            isCharging = false;
-            const rect = gameField.getBoundingClientRect();
-            const endX = e.changedTouches[0].clientX - rect.left;
-            const endY = e.changedTouches[0].clientY - rect.top;
-            const dx = endX - chargeStartX;
-            const dy = endY - chargeStartY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            const angle = Math.atan2(dy, dx);
-            const power = Math.min(distance, boostMax);
-            ballVX = Math.cos(angle) * power * 0.3;
-            ballVY = Math.sin(angle) * power * 0.3;
-            boostPower = 0;
-            updateBoostBar();
-        });
 
         function gameLoop() {
-            updateBall();
+            update();
+            draw();
             requestAnimationFrame(gameLoop);
         }
 
-        // Initialize
-        resetBall(true);
+        // Start game
         gameLoop();
     </script>
 </body>
