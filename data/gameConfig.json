@@ -1,12 +1,14 @@
 {
-    "gameName": "Dig out of Prison",
+    "gameName": "RocketGoal.io",
     "version": "1.0.0",
     "createdDate": "2026-03-11",
-    "aiUsage": "AI was used to help design the prison escape game mechanics, collision detection for obstacles, and create the immersive mining/digging gameplay experience. AI assisted in structuring the scoring system and integrating with the existing PHP backend for score management.",
+    "description": "A physics-based rocket soccer game where players charge boosts to launch the ball into the opposite goal. Similar to RocketGoal.io with gravity, friction, and skill-based gameplay.",
+    "aiUsage": "AI was used to create the physics engine for ball movement, gravity, collision detection, and goal detection. AI assisted in designing the game mechanics, boost charging system, and overall gameplay experience.",
     "credits": [
-        "Game Concept: Prison Escape Digging Game",
+        "Game Concept: RocketGoal.io Inspired Physics Soccer",
         "Developer: Replit Game Developer",
         "Framework: Vanilla PHP and JavaScript",
-        "UI Design: Dark theme with prison escape atmosphere"
+        "UI Design: Dark theme with neon accents",
+        "Physics Engine: Custom JavaScript implementation"
     ]
 }
