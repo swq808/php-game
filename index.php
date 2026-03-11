@@ -1,9 +1,9 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird</title>
+    <title>Dig out of Prison - Escape Game</title>
     <style>
         * {
             margin: 0;
@@ -12,363 +12,454 @@
         }
 
         body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: #70c5ce;
-            font-family: Arial, sans-serif;
+            color: #fff;
         }
 
         .game-container {
             position: relative;
-            width: 400px;
-            height: 600px;
-            background: linear-gradient(to bottom, #70c5ce 0%, #70c5ce 80%, #90ee90 80%, #90ee90 100%);
-            border: 3px solid #333;
+            width: 600px;
+            height: 800px;
+            background: linear-gradient(180deg, #2a2a3e 0%, #0f0f1e 100%);
+            border: 3px solid #ff6b00;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 30px rgba(255, 107, 0, 0.5);
         }
 
-        .bird {
-            position: absolute;
-            width: 34px;
-            height: 24px;
-            left: 50px;
-            background: #FFD700;
-            border-radius: 50%;
-            border: 2px solid #FFA500;
-            z-index: 10;
+        .game-board {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #1a1a2e 0px,
+                #1a1a2e 10px,
+                #252541 10px,
+                #252541 20px
+            );
+            cursor: crosshair;
         }
 
-        .bird::before {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: black;
-            border-radius: 50%;
-            right: 6px;
-            top: 6px;
-        }
-
-        .bird::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 6px solid transparent;
-            border-top: 4px solid transparent;
-            border-bottom: 4px solid transparent;
-            border-right: 6px solid #FFA500;
-            right: -8px;
-            top: 8px;
-        }
-
-        .pipe {
-            position: absolute;
-            background: #2d5016;
-            border: 2px solid #1a3009;
-            width: 80px;
-        }
-
-        .pipe-top {
-            background: linear-gradient(to bottom, #2d5016 0%, #1a3009 100%);
-        }
-
-        .pipe-bottom {
-            background: linear-gradient(to top, #2d5016 0%, #1a3009 100%);
-        }
-
-        .score {
+        .prison-cell {
             position: absolute;
             top: 20px;
-            left: 20px;
-            font-size: 32px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            z-index: 20;
-        }
-
-        .game-over {
-            position: absolute;
-            top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 40px;
-            border-radius: 10px;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 80px;
+            background: #333;
+            border: 2px solid #666;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
             text-align: center;
-            z-index: 100;
-            display: none;
-            min-width: 250px;
+            color: #ff6b00;
+            font-weight: bold;
         }
 
-        .game-over h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
+        .excavation-site {
+            position: absolute;
+            left: 50%;
+            top: 150px;
+            width: 400px;
+            height: 600px;
+            transform: translateX(-50%);
+            background: repeating-linear-gradient(
+                0deg,
+                #3d2817 0px,
+                #3d2817 30px,
+                #4a3220 30px,
+                #4a3220 60px
+            );
+            border: 2px solid #5a4a3a;
+            border-radius: 5px;
+            overflow: hidden;
         }
 
-        .game-over p {
+        .dig-particle {
+            position: absolute;
+            background: radial-gradient(circle, #8b6914 0%, #5a4a2a 100%);
+            border-radius: 50%;
+            animation: fall 2s ease-in forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(500px);
+                opacity: 0;
+            }
+        }
+
+        .obstacle {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 24px;
-            margin-bottom: 10px;
+            font-weight: bold;
+            border-radius: 3px;
         }
 
-        .game-over button {
-            margin-top: 20px;
-            padding: 10px 30px;
-            font-size: 18px;
+        .obstacle.guard {
+            background: #8B0000;
+            border: 2px solid #ff0000;
+            color: #fff;
+        }
+
+        .obstacle.trap {
             background: #FFD700;
+            border: 2px solid #FFA500;
+            color: #000;
+        }
+
+        .obstacle.rock {
+            background: #696969;
+            border: 2px solid #808080;
+            color: #fff;
+        }
+
+        .obstacle.gold {
+            background: #FFD700;
+            border: 2px solid #FFA500;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        .ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 100;
+            color: #ff6b00;
+        }
+
+        .stat {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #ff6b00;
+        }
+
+        .game-over-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            border-radius: 10px;
+        }
+
+        .game-over-screen.active {
+            display: flex;
+        }
+
+        .game-over-content {
+            text-align: center;
+        }
+
+        .game-over-title {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #ff6b00;
+            font-weight: bold;
+        }
+
+        .game-over-subtitle {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .score-display {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #FFD700;
+        }
+
+        .depth-display {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #aaa;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        .input-group input {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 2px solid #ff6b00;
+            border-radius: 5px;
+            background: #222;
+            color: #fff;
+            width: 250px;
+        }
+
+        .input-group input::placeholder {
+            color: #888;
+        }
+
+        .button {
+            padding: 12px 30px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8533 100%);
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s;
+            margin: 10px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .game-over button:hover {
-            background: #FFA500;
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.6);
         }
 
-        .instructions {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 12px;
-            text-align: right;
-            z-index: 20;
+        .button:active {
+            transform: scale(0.98);
         }
 
-        .instructions a {
-            color: #FFD700;
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
-
-        .instructions a:hover {
-            opacity: 0.8;
+        .tutorial {
+            font-size: 14px;
+            color: #aaa;
+            margin-top: 20px;
+            max-width: 400px;
         }
     </style>
 </head>
 <body>
-    <div class="game-container" id="gameContainer">
-        <div class="score" id="score">Score: 0</div>
-        <div class="game-over" id="gameOver">
-            <h1>Game Over!</h1>
-            <p id="finalScore">Final Score: 0</p>
-            <input type="text" id="playerName" placeholder="Enter your name" maxlength="30" style="
-                width: 100%;
-                padding: 10px;
-                margin: 10px 0;
-                border: none;
-                border-radius: 3px;
-                font-size: 14px;
-            ">
-            <div style="display: flex; gap: 10px;">
-                <button onclick="saveScore()" style="flex: 1; padding: 10px 15px; background: #90EE90; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Save Score</button>
-                <button onclick="location.reload()" style="flex: 1; padding: 10px 15px; background: #FFD700; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Play Again</button>
+    <div class="game-container">
+        <div class="game-board" id="gameBoard">
+            <div class="ui">
+                <div class="stat">Health: <span id="health">3</span></div>
+                <div class="stat">Depth: <span id="depth">0</span>m</div>
+                <div class="stat">Score: <span id="score">0</span></div>
             </div>
-            <a href="leaderboard.php" style="display: block; margin-top: 10px; color: #FFD700; text-decoration: none; text-align: center; font-size: 14px;">View Leaderboard</a>
-        </div>
-        <div class="instructions">
-            <div>Click or Press SPACE to fly</div>
-            <div style="margin-top: 10px; font-size: 11px;">
-                <a href="leaderboard.php" style="color: white; margin-right: 15px;">Leaderboard</a>
-                <a href="about.php" style="color: white;">About</a>
+
+            <div class="prison-cell">PRISON CELL<br>ESCAPE!</div>
+            
+            <div class="excavation-site" id="excavationSite"></div>
+
+            <div class="game-over-screen" id="gameOverScreen">
+                <div class="game-over-content">
+                    <div class="game-over-title" id="gameOverTitle">ESCAPED!</div>
+                    <div class="game-over-subtitle">Prison Break Success!</div>
+                    <div class="score-display">Score: <span id="finalScore">0</span></div>
+                    <div class="depth-display">Max Depth: <span id="finalDepth">0</span>m</div>
+                    <div class="input-group">
+                        <input type="text" id="playerName" placeholder="Enter your name" maxlength="20">
+                    </div>
+                    <button class="button" onclick="submitScore()">Save Score</button>
+                    <button class="button" onclick="location.reload()">Play Again</button>
+                    <button class="button" onclick="goToLeaderboard()">View Leaderboard</button>
+                    <div class="tutorial">
+                        <p id="gameOverMessage">You dug your way out!</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        const gameContainer = document.getElementById('gameContainer');
-        const gameOverScreen = document.getElementById('gameOver');
-        const scoreDisplay = document.getElementById('score');
-        const finalScoreDisplay = document.getElementById('finalScore');
-
-        const GRAVITY = 0.5;
-        const JUMP_STRENGTH = -10;
-        const PIPE_WIDTH = 80;
-        const PIPE_GAP = 120;
-        const PIPE_SPEED = -5;
+        const gameBoard = document.getElementById('gameBoard');
+        const excavationSite = document.getElementById('excavationSite');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        
+        const ESCAPE_DEPTH = 2000;
         const GAME_WIDTH = 400;
         const GAME_HEIGHT = 600;
 
-        let bird = {
-            x: 50,
-            y: 150,
-            width: 34,
-            height: 24,
-            velocityY: 0
+        let gameState = {
+            depth: 0,
+            score: 0,
+            health: 3,
+            gameOver: false,
+            escaped: false,
+            maxDepth: 0
         };
 
-        let pipes = [];
-        let score = 0;
-        let gameRunning = true;
-        let pipeCounter = 0;
+        const obstacleTypes = [
+            { type: 'guard', symbol: '👮', damage: 1, points: 50 },
+            { type: 'trap', symbol: '💣', damage: 1, points: 40 },
+            { type: 'rock', symbol: '🪨', damage: 0, points: 20 },
+            { type: 'gold', symbol: '💰', damage: 0, points: 100 }
+        ];
 
-        function createBirdElement() {
-            const birdDiv = document.createElement('div');
-            birdDiv.className = 'bird';
-            birdDiv.id = 'bird';
-            gameContainer.appendChild(birdDiv);
-            updateBirdPosition();
+        function createObstacle() {
+            if (gameState.gameOver) return;
+            
+            const types = obstacleTypes.filter(t => t.type !== 'gold' || Math.random() > 0.7);
+            const selected = types[Math.floor(Math.random() * types.length)];
+            
+            const obstacle = document.createElement('div');
+            obstacle.className = `obstacle ${selected.type}`;
+            obstacle.textContent = selected.symbol;
+            obstacle.dataset.type = selected.type;
+            obstacle.dataset.damage = selected.damage;
+            obstacle.dataset.points = selected.points;
+            
+            const size = 40;
+            obstacle.style.width = size + 'px';
+            obstacle.style.height = size + 'px';
+            obstacle.style.left = Math.random() * (GAME_WIDTH - size) + 'px';
+            obstacle.style.top = Math.random() * (GAME_HEIGHT - size) + 'px';
+            
+            excavationSite.appendChild(obstacle);
+            
+            setTimeout(() => {
+                if (obstacle.parentElement) {
+                    obstacle.remove();
+                }
+            }, 4000);
         }
 
-        function updateBirdPosition() {
-            const birdDiv = document.getElementById('bird');
-            if (birdDiv) {
-                birdDiv.style.top = bird.y + 'px';
-                birdDiv.style.left = bird.x + 'px';
-
-                const angle = Math.min(Math.max(bird.velocityY * 2, -20), 30);
-                birdDiv.style.transform = `rotate(${angle}deg)`;
+        function updateDepth() {
+            gameState.depth += 10;
+            if (gameState.depth > gameState.maxDepth) {
+                gameState.maxDepth = gameState.depth;
+            }
+            document.getElementById('depth').textContent = gameState.depth;
+            
+            if (gameState.depth >= ESCAPE_DEPTH) {
+                endGame(true);
             }
         }
 
-        function createPipe() {
-            const gapStart = Math.random() * (GAME_HEIGHT - PIPE_GAP - 100) + 50;
-
-            const pipeTop = document.createElement('div');
-            pipeTop.className = 'pipe pipe-top';
-            pipeTop.style.left = GAME_WIDTH + 'px';
-            pipeTop.style.top = '0px';
-            pipeTop.style.height = gapStart + 'px';
-            pipeTop.setAttribute('data-x', GAME_WIDTH);
-            pipeTop.setAttribute('data-scored', 'false');
-            gameContainer.appendChild(pipeTop);
-
-            const pipeBottom = document.createElement('div');
-            pipeBottom.className = 'pipe pipe-bottom';
-            pipeBottom.style.left = GAME_WIDTH + 'px';
-            pipeBottom.style.top = (gapStart + PIPE_GAP) + 'px';
-            pipeBottom.style.height = (GAME_HEIGHT - gapStart - PIPE_GAP) + 'px';
-            pipeBottom.setAttribute('data-x', GAME_WIDTH);
-            pipeBottom.setAttribute('data-scored', 'false');
-            gameContainer.appendChild(pipeBottom);
-
-            pipes.push({
-                x: GAME_WIDTH,
-                topHeight: gapStart,
-                bottomStart: gapStart + PIPE_GAP,
-                scored: false,
-                topElement: pipeTop,
-                bottomElement: pipeBottom
+        function dig(x, y) {
+            if (gameState.gameOver) return;
+            
+            // Particle effect
+            for (let i = 0; i < 3; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'dig-particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                gameBoard.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 2000);
+            }
+            
+            // Check for obstacles hit
+            const excavationRect = excavationSite.getBoundingClientRect();
+            const gameRect = gameBoard.getBoundingClientRect();
+            
+            const clickX = x - (excavationRect.left - gameRect.left);
+            const clickY = y - (excavationRect.top - gameRect.top);
+            
+            const obstacles = excavationSite.querySelectorAll('.obstacle');
+            obstacles.forEach(obs => {
+                const obsRect = obs.getBoundingClientRect();
+                const obsX = obsRect.left - excavationRect.left;
+                const obsY = obsRect.top - excavationRect.top;
+                const obsW = obsRect.width;
+                const obsH = obsRect.height;
+                
+                if (clickX >= obsX && clickX <= obsX + obsW && 
+                    clickY >= obsY && clickY <= obsY + obsH) {
+                    handleObstacleHit(obs);
+                }
             });
+            
+            updateDepth();
         }
 
-        function updatePipes() {
-            pipes = pipes.filter(pipe => pipe.x > -PIPE_WIDTH);
-
-            pipes.forEach(pipe => {
-                pipe.x += PIPE_SPEED;
-                pipe.topElement.style.left = pipe.x + 'px';
-                pipe.bottomElement.style.left = pipe.x + 'px';
-
-                if (!pipe.scored && pipe.x < bird.x) {
-                    pipe.scored = true;
-                    score++;
-                    scoreDisplay.textContent = 'Score: ' + score;
-                }
-
-                if (checkCollision(pipe)) {
-                    endGame();
-                }
-            });
-        }
-
-        function checkCollision(pipe) {
-            const birdRight = bird.x + bird.width;
-            const birdBottom = bird.y + bird.height;
-            const pipeRight = pipe.x + PIPE_WIDTH;
-
-            if (birdRight > pipe.x && bird.x < pipeRight) {
-                if (bird.y < pipe.topHeight || birdBottom > pipe.bottomStart) {
-                    return true;
+        function handleObstacleHit(obstacle) {
+            const damage = parseInt(obstacle.dataset.damage);
+            const points = parseInt(obstacle.dataset.points);
+            
+            if (damage > 0) {
+                gameState.health -= damage;
+                document.getElementById('health').textContent = gameState.health;
+                
+                if (gameState.health <= 0) {
+                    endGame(false);
+                    return;
                 }
             }
-            return false;
+            
+            gameState.score += points;
+            document.getElementById('score').textContent = gameState.score;
+            
+            obstacle.style.opacity = '0.5';
+            setTimeout(() => obstacle.remove(), 200);
         }
 
-        function updateBird() {
-            bird.velocityY += GRAVITY;
-            bird.y += bird.velocityY;
-
-            if (bird.y <= 0 || bird.y + bird.height >= GAME_HEIGHT) {
-                endGame();
+        function endGame(escaped) {
+            gameState.gameOver = true;
+            gameState.escaped = escaped;
+            
+            const title = document.getElementById('gameOverTitle');
+            const message = document.getElementById('gameOverMessage');
+            
+            if (escaped) {
+                title.textContent = 'ESCAPED!';
+                message.textContent = 'You dug your way to freedom!';
+                gameState.score += 500;
+            } else {
+                title.textContent = 'CAUGHT!';
+                message.textContent = 'You were caught trying to escape.';
+                document.querySelector('.game-over-subtitle').textContent = 'Game Over';
             }
-
-            updateBirdPosition();
+            
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('finalDepth').textContent = gameState.maxDepth;
+            gameOverScreen.classList.add('active');
         }
 
-        function jump() {
-            bird.velocityY = JUMP_STRENGTH;
-        }
-
-        function endGame() {
-            gameRunning = false;
-            gameOverScreen.style.display = 'block';
-            finalScoreDisplay.textContent = 'Final Score: ' + score;
-        }
-
-        function gameLoop() {
-            if (!gameRunning) return;
-
-            updateBird();
-            updatePipes();
-
-            pipeCounter++;
-            if (pipeCounter > 90) {
-                createPipe();
-                pipeCounter = 0;
-            }
-
-            requestAnimationFrame(gameLoop);
-        }
-
-        document.addEventListener('click', jump);
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                jump();
-            }
-        });
-
-        function saveScore() {
-            const playerNameInput = document.getElementById('playerName');
-            const playerName = playerNameInput.value.trim() || 'Anonymous';
-
+        function submitScore() {
+            const playerName = document.getElementById('playerName').value || 'Anonymous';
+            
             fetch('game.php?action=saveScore', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     playerName: playerName,
-                    score: score
+                    score: gameState.score
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    playerNameInput.style.borderTop = '3px solid #90EE90';
-                    playerNameInput.placeholder = 'Score saved!';
-                    playerNameInput.disabled = true;
-                    setTimeout(() => {
-                        window.location.href = 'leaderboard.php';
-                    }, 1500);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+            }).then(() => {
+                goToLeaderboard();
+            });
         }
 
-        createBirdElement();
-        createPipe();
-        gameLoop();
+        function goToLeaderboard() {
+            window.location.href = 'leaderboard.php';
+        }
+
+        gameBoard.addEventListener('click', (e) => {
+            const rect = gameBoard.getBoundingClientRect();
+            dig(e.clientX - rect.left, e.clientY - rect.top);
+        });
+
+        // Spawn obstacles periodically
+        setInterval(() => {
+            if (!gameState.gameOver && Math.random() > 0.3) {
+                createObstacle();
+            }
+        }, 800);
     </script>
 </body>
 </html>

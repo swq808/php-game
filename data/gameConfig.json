@@ -1,12 +1,12 @@
 {
-    "gameName": "Flappy Bird",
+    "gameName": "Dig out of Prison",
     "version": "1.0.0",
-    "createdDate": "2026-03-09",
-    "aiUsage": "AI was used to help design the game mechanics, optimize the collision detection algorithm, and create the responsive user interface. AI assisted in structuring the PHP backend functions for score management and leaderboard sorting.",
+    "createdDate": "2026-03-11",
+    "aiUsage": "AI was used to help design the prison escape game mechanics, collision detection for obstacles, and create the immersive mining/digging gameplay experience. AI assisted in structuring the scoring system and integrating with the existing PHP backend for score management.",
     "credits": [
-        "Game Concept: Flappy Bird inspired game",
+        "Game Concept: Prison Escape Digging Game",
         "Developer: Replit Game Developer",
         "Framework: Vanilla PHP and JavaScript",
-        "UI Design: Modern gradient-based interface"
+        "UI Design: Dark theme with prison escape atmosphere"
     ]
 }

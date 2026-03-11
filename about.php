@@ -17,7 +17,7 @@ $config = loadGameConfig();
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -25,14 +25,15 @@ $config = loadGameConfig();
         .container {
             max-width: 900px;
             margin: 0 auto;
-            background: white;
+            background: #2a2a3e;
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             overflow: hidden;
+            border: 2px solid #ff6b00;
         }
         
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8533 100%);
             color: white;
             padding: 40px 30px;
             text-align: center;
@@ -50,6 +51,7 @@ $config = loadGameConfig();
         
         .content {
             padding: 40px;
+            color: #fff;
         }
         
         .section {
@@ -57,15 +59,15 @@ $config = loadGameConfig();
         }
         
         .section h2 {
-            color: #667eea;
+            color: #ff6b00;
             font-size: 28px;
             margin-bottom: 15px;
-            border-bottom: 3px solid #667eea;
+            border-bottom: 3px solid #ff6b00;
             padding-bottom: 10px;
         }
         
         .section h3 {
-            color: #764ba2;
+            color: #ff8533;
             font-size: 18px;
             margin-top: 20px;
             margin-bottom: 10px;
@@ -81,46 +83,47 @@ $config = loadGameConfig();
             padding-left: 30px;
             position: relative;
             line-height: 1.6;
-            color: #333;
+            color: #ddd;
         }
         
         .rules-list li:before {
-            content: "✓";
+            content: "⚒";
             position: absolute;
             left: 0;
-            color: #667eea;
+            color: #ff6b00;
             font-weight: bold;
             font-size: 18px;
         }
         
         .credits {
-            background: #f5f5f5;
+            background: rgba(255, 107, 0, 0.1);
             padding: 20px;
             border-radius: 8px;
             margin-top: 15px;
+            border-left: 4px solid #ff6b00;
         }
         
         .credits p {
             margin: 10px 0;
-            color: #333;
+            color: #ddd;
             line-height: 1.6;
         }
         
         .ai-usage {
-            background: #e3f2fd;
+            background: rgba(255, 107, 0, 0.05);
             padding: 20px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #ff6b00;
             border-radius: 8px;
             margin-top: 15px;
         }
         
         .ai-usage h4 {
-            color: #667eea;
+            color: #ff6b00;
             margin-bottom: 10px;
         }
         
         .ai-usage p {
-            color: #333;
+            color: #ddd;
             line-height: 1.6;
         }
         
@@ -133,18 +136,19 @@ $config = loadGameConfig();
         
         .controls a {
             padding: 12px 30px;
-            background: #667eea;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8533 100%);
             color: white;
             text-decoration: none;
             border-radius: 5px;
             transition: all 0.3s;
             font-weight: 500;
+            border: 2px solid #ff6b00;
         }
         
         .controls a:hover {
-            background: #764ba2;
+            background: linear-gradient(135deg, #ff8533 0%, #ff6b00 100%);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.6);
         }
         
         .info-grid {
@@ -155,21 +159,22 @@ $config = loadGameConfig();
         }
         
         .info-card {
-            background: #f5f5f5;
+            background: rgba(255, 107, 0, 0.1);
             padding: 15px;
             border-radius: 8px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #ff6b00;
+            color: #ddd;
         }
         
         .info-card strong {
-            color: #667eea;
+            color: #ff6b00;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎮 <?php echo htmlspecialchars($config['gameName']); ?></h1>
+            <h1>⛏️ <?php echo htmlspecialchars($config['gameName']); ?></h1>
             <p>Version <?php echo htmlspecialchars($config['version']); ?></p>
         </div>
         
@@ -177,13 +182,14 @@ $config = loadGameConfig();
             <div class="section">
                 <h2>📖 Game Rules</h2>
                 <ul class="rules-list">
-                    <li>Click the mouse or press SPACE to make the bird fly upward</li>
-                    <li>Navigate through the gaps between pipes without hitting them</li>
-                    <li>Each pipe you pass successfully increases your score by 1 point</li>
-                    <li>Colliding with a pipe or hitting the ground ends the game</li>
-                    <li>Try to achieve the highest score possible and compete on the leaderboard</li>
-                    <li>The bird will fall due to gravity if you don't make it jump</li>
-                    <li>Pipes appear at random heights to create different challenges</li>
+                    <li>Click anywhere in the excavation pit to dig deeper and escape</li>
+                    <li>Avoid guards (👮) and traps (💣) - they will damage your health</li>
+                    <li>Mine rocks (🪨) for points - every rock destroyed increases your score</li>
+                    <li>Collect gold (💰) for bonus points - rare but valuable!</li>
+                    <li>You start with 3 health points - avoid taking damage</li>
+                    <li>Dig deep enough (2000 meters) to escape the prison</li>
+                    <li>Higher scores are recorded on the leaderboard for bragging rights</li>
+                    <li>Mix strategy with quick reflexes to survive underground obstacles</li>
                 </ul>
             </div>
             
@@ -191,12 +197,12 @@ $config = loadGameConfig();
                 <h2>🏆 Game Features</h2>
                 <div class="info-grid">
                     <div class="info-card">
-                        <strong>📊 Score Tracking:</strong><br>
-                        Real-time score updates as you navigate pipes
+                        <strong>⚡ Dynamic Obstacles:</strong><br>
+                        Guards, traps, rocks, and gold spawn randomly
                     </div>
                     <div class="info-card">
-                        <strong>🎨 Visual Effects:</strong><br>
-                        Bird rotation animation based on velocity
+                        <strong>💯 Progressive Scoring:</strong><br>
+                        Earn points by mining and avoiding dangers
                     </div>
                     <div class="info-card">
                         <strong>🏅 Leaderboard:</strong><br>
@@ -204,7 +210,7 @@ $config = loadGameConfig();
                     </div>
                     <div class="info-card">
                         <strong>💾 Persistent Data:</strong><br>
-                        All scores are saved for future sessions
+                        All escape attempts are recorded
                     </div>
                 </div>
             </div>
@@ -245,8 +251,8 @@ $config = loadGameConfig();
             </div>
             
             <div class="controls">
-                <a href="index.php">← Back to Game</a>
-                <a href="leaderboard.php">View Leaderboard →</a>
+                <a href="index.php">⛏️ Back to Game</a>
+                <a href="leaderboard.php">🏆 View Leaderboard</a>
             </div>
         </div>
     </div>
