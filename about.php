@@ -182,14 +182,14 @@ $config = loadGameConfig();
             <div class="section">
                 <h2>📖 Game Rules</h2>
                 <ul class="rules-list">
-                    <li>Click anywhere in the excavation pit to dig deeper and escape</li>
-                    <li>Avoid guards (👮) and traps (💣) - they will damage your health</li>
-                    <li>Mine rocks (🪨) for points - every rock destroyed increases your score</li>
-                    <li>Collect gold (💰) for bonus points - rare but valuable!</li>
-                    <li>You start with 3 health points - avoid taking damage</li>
-                    <li>Dig deep enough (2000 meters) to escape the prison</li>
-                    <li>Higher scores are recorded on the leaderboard for bragging rights</li>
-                    <li>Mix strategy with quick reflexes to survive underground obstacles</li>
+                    <li>Click anywhere or press SPACE to make the bird flap</li>
+                    <li>Avoid the green pipes - collision ends the game immediately</li>
+                    <li>Safely navigate through the gaps in the pipes</li>
+                    <li>Score points by successfully passing through each pipe obstacle</li>
+                    <li>Each pipe cleared increases your score by 1 point</li>
+                    <li>The bird falls continuously due to gravity - keep it in the air!</li>
+                    <li>Game ends when you hit a pipe or the ground</li>
+                    <li>Save your score with a name to appear on the leaderboard</li>
                 </ul>
             </div>
             
@@ -197,20 +197,20 @@ $config = loadGameConfig();
                 <h2>🏆 Game Features</h2>
                 <div class="info-grid">
                     <div class="info-card">
-                        <strong>⚡ Dynamic Obstacles:</strong><br>
-                        Guards, traps, rocks, and gold spawn randomly
+                        <strong>⚡ Randomly Generated Pipes:</strong><br>
+                        No two games are the same - new obstacles every time
                     </div>
                     <div class="info-card">
                         <strong>💯 Progressive Scoring:</strong><br>
-                        Earn points by mining and avoiding dangers
+                        Each pipe you pass increases your score
                     </div>
                     <div class="info-card">
-                        <strong>🏅 Leaderboard:</strong><br>
-                        Save your scores and compete with others
+                        <strong>🏅 Competitive Leaderboard:</strong><br>
+                        Save your scores and compete with other players
                     </div>
                     <div class="info-card">
-                        <strong>💾 Persistent Data:</strong><br>
-                        All escape attempts are recorded
+                        <strong>💾 Data Persistence:</strong><br>
+                        All game scores are saved to the leaderboard
                     </div>
                 </div>
             </div>
@@ -251,7 +251,7 @@ $config = loadGameConfig();
             </div>
             
             <div class="controls">
-                <a href="index.php">⛏️ Back to Game</a>
+                <a href="index.php">🐦 Back to Game</a>
                 <a href="leaderboard.php">🏆 View Leaderboard</a>
             </div>
         </div>

@@ -1,14 +1,15 @@
 {
-    "gameName": "RocketGoal.io",
+    "gameName": "Flappy Bird",
     "version": "1.0.0",
     "createdDate": "2026-03-11",
-    "description": "A physics-based rocket soccer game where players charge boosts to launch the ball into the opposite goal. Similar to RocketGoal.io with gravity, friction, and skill-based gameplay.",
-    "aiUsage": "AI was used to create the physics engine for ball movement, gravity, collision detection, and goal detection. AI assisted in designing the game mechanics, boost charging system, and overall gameplay experience.",
+    "description": "A classic Flappy Bird game where players navigate a bird through randomly generated pipe obstacles to earn points.",
+    "aiUsage": "AI was used to create the physics engine for gravity and collision detection, design the game mechanics for pipe generation, and optimize the score tracking and leaderboard systems.",
     "credits": [
-        "Game Concept: RocketGoal.io Inspired Physics Soccer",
+        "Game Concept: Flappy Bird (inspired by the original)",
         "Developer: Replit Game Developer",
-        "Framework: Vanilla PHP and JavaScript",
-        "UI Design: Dark theme with neon accents",
+        "Framework: Vanilla JavaScript and PHP",
+        "Frontend: HTML5 Canvas with CSS3 styling",
+        "Backend: PHP with JSON data persistence",
         "Physics Engine: Custom JavaScript implementation"
     ]
 }

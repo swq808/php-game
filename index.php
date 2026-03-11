@@ -98,6 +98,169 @@
             font-size: 14px;
             z-index: 10;
         }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+            display: none;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 350px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .modal-content p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .modal-content input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .modal-buttons .save-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .modal-buttons .save-btn:hover {
+            background: #764ba2;
+        }
+
+        .modal-buttons .skip-btn {
+            background: #ddd;
+            color: #333;
+        }
+
+        .modal-buttons .skip-btn:hover {
+            background: #ccc;
+        }
+
+        .modal-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .modal-links a {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .modal-links a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .status-message {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .leaderboard-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .leaderboard-btn:hover {
+            background: #764ba2;
+        }
+
+        .about-btn {
+            position: absolute;
+            top: 20px;
+            right: 130px;
+            padding: 10px 15px;
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .about-btn:hover {
+            background: #5a3a85;
+        }
     </style>
 </head>
 <body>
@@ -106,13 +269,32 @@
         <div class="info">
             Score: <span id="score">0</span>
         </div>
+        <a href="about.php" class="about-btn">ℹ️ About</a>
+        <a href="leaderboard.php" class="leaderboard-btn">🏆 Leaderboard</a>
         <div class="game-over" id="gameOver">
             <h1>Game Over!</h1>
             <p>Score: <span id="finalScore">0</span></p>
-            <button onclick="location.reload()">Play Again</button>
+            <button onclick="resetGame()">Play Again</button>
         </div>
         <div class="instructions">
             Click or press SPACE to flap
+        </div>
+    </div>
+
+    <div class="modal" id="saveModal">
+        <div class="modal-content">
+            <h2>Game Over!</h2>
+            <p>Final Score: <span id="modalScore">0</span></p>
+            <input type="text" id="playerName" placeholder="Enter your name" maxlength="50">
+            <div id="statusMessage" class="status-message"></div>
+            <div class="modal-buttons">
+                <button class="save-btn" onclick="saveScore()">💾 Save Score</button>
+                <button class="skip-btn" onclick="skipSaveAndRestart()">Skip</button>
+            </div>
+            <div class="modal-links">
+                <a href="leaderboard.php">View Leaderboard</a>
+                <a href="about.php">Game Rules</a>
+            </div>
         </div>
     </div>
 
@@ -120,9 +302,10 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const gameContainer = document.getElementById('gameContainer');
-        const gameOverScreen = document.getElementById('gameOver');
+        const saveModal = document.getElementById('saveModal');
         const scoreDisplay = document.getElementById('score');
-        const finalScoreDisplay = document.getElementById('finalScore');
+        const playerNameInput = document.getElementById('playerName');
+        const statusMessage = document.getElementById('statusMessage');
 
         // Game variables
         const bird = {
@@ -244,9 +427,12 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Draw pipes
-            ctx.fillStyle = '#2ecc71';
+            // Draw pipes with gradient effect
             pipes.forEach(pipe => {
+                const pipeGradient = ctx.createLinearGradient(pipe.x, 0, pipe.x + pipe.width, 0);
+                pipeGradient.addColorStop(0, '#27ae60');
+                pipeGradient.addColorStop(1, '#2ecc71');
+                ctx.fillStyle = pipeGradient;
                 ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
             });
 
@@ -257,13 +443,13 @@
                 ctx.strokeRect(pipe.x, pipe.y, pipe.width, pipe.height);
             });
 
-            // Draw bird
+            // Draw bird with animated effect
             ctx.fillStyle = bird.color;
             ctx.beginPath();
             ctx.arc(bird.x + bird.width / 2, bird.y + bird.height / 2, bird.width / 2, 0, Math.PI * 2);
             ctx.fill();
 
-            // Draw bird eye
+            // Draw bird eye - visual effect
             ctx.fillStyle = 'white';
             ctx.beginPath();
             ctx.arc(bird.x + bird.width / 2 + 5, bird.y + bird.height / 2 - 5, 4, 0, Math.PI * 2);
@@ -277,8 +463,72 @@
 
         function endGame() {
             gameRunning = false;
-            finalScoreDisplay.textContent = score;
-            gameOverScreen.style.display = 'block';
+            document.getElementById('modalScore').textContent = score;
+            playerNameInput.value = '';
+            statusMessage.textContent = '';
+            statusMessage.className = 'status-message';
+            saveModal.style.display = 'flex';
+            playerNameInput.focus();
+        }
+
+        function saveScore() {
+            const playerName = playerNameInput.value.trim() || 'Anonymous';
+            
+            if (playerName.length > 50) {
+                showStatus('Name must be 50 characters or less', 'error');
+                return;
+            }
+
+            const data = {
+                playerName: playerName,
+                score: score
+            };
+
+            fetch('game.php?action=saveScore', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showStatus('Score saved! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'leaderboard.php';
+                    }, 1500);
+                } else {
+                    showStatus('Failed to save score', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showStatus('Error saving score', 'error');
+            });
+        }
+
+        function skipSaveAndRestart() {
+            resetGame();
+        }
+
+        function resetGame() {
+            // Reset game state
+            bird.y = 150;
+            bird.velocity = 0;
+            pipes = [];
+            score = 0;
+            pipeCounter = 0;
+            gameRunning = true;
+            scoreDisplay.textContent = '0';
+            saveModal.style.display = 'none';
+            statusMessage.textContent = '';
+            statusMessage.className = 'status-message';
+        }
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
         }
 
         function gameLoop() {
@@ -289,6 +539,13 @@
 
         // Start game
         gameLoop();
+
+        // Allow pressing Enter to save score
+        playerNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                saveScore();
+            }
+        });
     </script>
 </body>
 </html>
