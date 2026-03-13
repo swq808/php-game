@@ -31,7 +31,7 @@
             cursor: pointer;
         }
 
-        canvas {
+        canvas { 
             display: block;
             width: 100%;
             height: 100%;
@@ -269,8 +269,8 @@
         <div class="info">
             Score: <span id="score">0</span>
         </div>
-        <a href="about.php" class="about-btn">ℹ️ About</a>
-        <a href="leaderboard.php" class="leaderboard-btn">🏆 Leaderboard</a>
+        <a href="about.php" class="about-btn">About</a>
+        <a href="leaderboard.php" class="leaderboard-btn"> Leaderboard</a>
         <div class="game-over" id="gameOver">
             <h1>Game Over!</h1>
             <p>Score: <span id="finalScore">0</span></p>
@@ -288,7 +288,7 @@
             <input type="text" id="playerName" placeholder="Enter your name" maxlength="50">
             <div id="statusMessage" class="status-message"></div>
             <div class="modal-buttons">
-                <button class="save-btn" onclick="saveScore()">💾 Save Score</button>
+                <button class="save-btn" onclick="saveScore()">Save Score</button>
                 <button class="skip-btn" onclick="skipSaveAndRestart()">Skip</button>
             </div>
             <div class="modal-links">

@@ -175,19 +175,19 @@ $scores = sortScoresBy($sortBy);
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏆 Leaderboard</h1>
+            <h1>Leaderboard</h1>
             <p>Top Flappy Bird Scores</p>
         </div>
         
         <div class="controls">
             <a href="leaderboard.php?sortBy=score" class="sort-btn <?php echo $sortBy === 'score' ? 'active' : ''; ?>">
-                📊 Sort by Score
+                 Sort by Score
             </a>
             <a href="leaderboard.php?sortBy=name" class="sort-btn <?php echo $sortBy === 'name' ? 'active' : ''; ?>">
-                👤 Sort by Name
+                 Sort by Name
             </a>
             <a href="leaderboard.php?sortBy=date" class="sort-btn <?php echo $sortBy === 'date' ? 'active' : ''; ?>">
-                📅 Sort by Date
+                 Sort by Date
             </a>
             <a href="index.php" class="home-btn">← Back to Game</a>
         </div>
