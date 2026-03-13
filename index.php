@@ -307,7 +307,6 @@
         const playerNameInput = document.getElementById('playerName');
         const statusMessage = document.getElementById('statusMessage');
 
-        // Game variables
         const bird = {
             x: 50,
             y: 150,
@@ -322,13 +321,11 @@
         let pipes = [];
         let score = 0;
         let gameRunning = true;
-        let gameStarted = false;
         let pipeCounter = 0;
         const pipeGap = 120;
         const pipeWidth = 60;
         const pipeSpacing = 200;
 
-        // Event listeners
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space') {
                 e.preventDefault();
@@ -367,11 +364,9 @@
         function update() {
             if (!gameRunning) return;
 
-            // Apply gravity
             bird.velocity += bird.gravity;
             bird.y += bird.velocity;
 
-            // Check boundaries
             if (bird.y + bird.height > canvas.height) {
                 endGame();
                 return;
@@ -381,17 +376,14 @@
                 bird.y = 0;
             }
 
-            // Update pipes
             for (let i = pipes.length - 1; i >= 0; i--) {
                 pipes[i].x -= 5;
 
-                // Remove off-screen pipes
                 if (pipes[i].x + pipeWidth < 0) {
                     pipes.splice(i, 1);
                     continue;
                 }
 
-                // Check collision
                 if (
                     bird.x < pipes[i].x + pipes[i].width &&
                     bird.x + bird.width > pipes[i].x &&
@@ -402,7 +394,6 @@
                     return;
                 }
 
-                // Score when passing a pipe
                 if (pipes[i].x + pipeWidth < bird.x && pipes[i].x + pipeWidth > bird.x - 5) {
                     if (pipes[i].height < canvas.height / 2) {
                         score++;
@@ -411,7 +402,6 @@
                 }
             }
 
-            // Create new pipes
             pipeCounter++;
             if (pipeCounter > pipeSpacing) {
                 createPipe();
@@ -420,14 +410,12 @@
         }
 
         function draw() {
-            // Draw background
             const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
             gradient.addColorStop(0, '#87ceeb');
             gradient.addColorStop(1, '#e0f6ff');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Draw pipes with gradient effect
             pipes.forEach(pipe => {
                 const pipeGradient = ctx.createLinearGradient(pipe.x, 0, pipe.x + pipe.width, 0);
                 pipeGradient.addColorStop(0, '#27ae60');
@@ -436,20 +424,17 @@
                 ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
             });
 
-            // Draw pipe borders for effect
             ctx.strokeStyle = '#27ae60';
             ctx.lineWidth = 2;
             pipes.forEach(pipe => {
                 ctx.strokeRect(pipe.x, pipe.y, pipe.width, pipe.height);
             });
 
-            // Draw bird with animated effect
             ctx.fillStyle = bird.color;
             ctx.beginPath();
             ctx.arc(bird.x + bird.width / 2, bird.y + bird.height / 2, bird.width / 2, 0, Math.PI * 2);
             ctx.fill();
 
-            // Draw bird eye - visual effect
             ctx.fillStyle = 'white';
             ctx.beginPath();
             ctx.arc(bird.x + bird.width / 2 + 5, bird.y + bird.height / 2 - 5, 4, 0, Math.PI * 2);
@@ -513,7 +498,6 @@
         }
 
         function resetGame() {
-            // Reset game state
             bird.y = 150;
             bird.velocity = 0;
             pipes = [];
@@ -537,10 +521,8 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // Start game
         gameLoop();
 
-        // Allow pressing Enter to save score
         playerNameInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 saveScore();

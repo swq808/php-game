@@ -1,9 +1,7 @@
 <?php
 
 function loadGameData($filename = 'data/gamePlay.json') {
-    if (!file_exists($filename)) {
-        return [];
-    }
+    if (!file_exists($filename)) return [];
     $json = file_get_contents($filename);
     return json_decode($json, true) ?: [];
 }
@@ -96,13 +94,7 @@ function loadGameConfig($filename = 'data/gameConfig.json') {
         $defaultConfig = [
             'gameName' => 'Flappy Bird',
             'version' => '1.0.0',
-            'createdDate' => date('Y-m-d'),
-            'aiUsage' => 'AI was used to help design the game mechanics and optimize the collision detection algorithm.',
-            'credits' => [
-                'Game Concept: Flappy Bird inspired game',
-                'Developer: Replit Game Developer',
-                'Framework: Vanilla PHP and JavaScript'
-            ]
+            'createdDate' => date('Y-m-d')
         ];
         saveGameConfig($defaultConfig, $filename);
         return $defaultConfig;
