@@ -34,7 +34,7 @@ A classic Flappy Bird game built with HTML5 Canvas, vanilla JavaScript, and PHP 
 
 - `index.php` - Main game page with Canvas rendering
 - `leaderboard.php` - Score leaderboard with sorting
-- `about.php` - Game rules, features, credits, and AI usage
+- `about.php` - Game rules, features, and credits
 - `game.php` - API endpoint for saving/retrieving scores
 - `functions.php` - Reusable PHP functions (8 functions)
   - loadGameData()
@@ -47,7 +47,7 @@ A classic Flappy Bird game built with HTML5 Canvas, vanilla JavaScript, and PHP 
   - loadGameConfig()
   - saveGameConfig()
 - `data/gamePlay.json` - Player scores database
-- `data/gameConfig.json` - Game configuration
+- `data/gameConfig.json` - Game configuration and credits
 
 ## Gameplay Requirements Met
 
@@ -62,5 +62,5 @@ A classic Flappy Bird game built with HTML5 Canvas, vanilla JavaScript, and PHP 
 
 ✅ Two JSON data files (gamePlay.json, gameConfig.json)
 ✅ Reusable PHP functions in functions.php (9 functions)
-✅ About page with rules, credits, and AI usage
-✅ GitHub ready for 12+ targeted commits (Phase 2)
+✅ About page with rules and credits
+✅ Complete leaderboard system with sorting

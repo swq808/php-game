@@ -3,13 +3,12 @@
     "version": "1.0.0",
     "createdDate": "2026-03-11",
     "description": "A classic Flappy Bird game where players navigate a bird through randomly generated pipe obstacles to earn points.",
-    "aiUsage": "AI was used to create the physics engine for gravity and collision detection, design the game mechanics for pipe generation, and optimize the score tracking and leaderboard systems.",
     "credits": [
-        "Game Concept: Flappy Bird (inspired by the original)",
-        "Developer: Replit Game Developer",
+        "Game Concept: Inspired by the original Flappy Bird",
+        "Developer: Game Development Team",
         "Framework: Vanilla JavaScript and PHP",
-        "Frontend: HTML5 Canvas with CSS3 styling",
-        "Backend: PHP with JSON data persistence",
-        "Physics Engine: Custom JavaScript implementation"
+        "Frontend: HTML5 Canvas with CSS3",
+        "Backend: PHP with JSON file storage",
+        "Leaderboard System: Custom implementation"
     ]
 }

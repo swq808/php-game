@@ -225,14 +225,6 @@ $config = loadGameConfig();
             </div>
             
             <div class="section">
-                <h2>🤖 AI Usage Documentation</h2>
-                <div class="ai-usage">
-                    <h4>How AI Was Used in Development</h4>
-                    <p><?php echo htmlspecialchars($config['aiUsage']); ?></p>
-                </div>
-            </div>
-            
-            <div class="section">
                 <h2>📊 Technical Information</h2>
                 <div class="info-grid">
                     <div class="info-card">
