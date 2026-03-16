@@ -288,7 +288,8 @@
             <input type="text" id="playerName" placeholder="Enter your name" maxlength="50">
             <div id="statusMessage" class="status-message"></div>
             <div class="modal-buttons">
-                <button class="save-btn" onclick="saveScore()">Save Score</button>
+                <button class="save-btn" onclick="saveScore()">
+                    Save Score</button>
                 <button class="skip-btn" onclick="skipSaveAndRestart()">Skip</button>
             </div>
             <div class="modal-links">
