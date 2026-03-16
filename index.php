@@ -351,14 +351,16 @@
                 x: canvas.width,
                 y: 0,
                 width: pipeWidth,
-                height: pipeY
+                height: pipeY,
+                scored: false
             });
 
             pipes.push({
                 x: canvas.width,
                 y: pipeY + pipeGap,
                 width: pipeWidth,
-                height: canvas.height - (pipeY + pipeGap)
+                height: canvas.height - (pipeY + pipeGap),
+                scored: false
             });
         }
 
@@ -395,7 +397,8 @@
                     return;
                 }
 
-                if (pipes[i].x + pipeWidth < bird.x && pipes[i].x + pipeWidth > bird.x - 5) {
+                if (!pipes[i].scored && pipes[i].x + pipeWidth < bird.x) {
+                    pipes[i].scored = true;
                     if (pipes[i].height < canvas.height / 2) {
                         score++;
                         scoreDisplay.textContent = score;
